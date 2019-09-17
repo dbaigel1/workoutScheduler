@@ -40,9 +40,10 @@ with open('workouts.csv', mode='r') as csv_file:
         	break
     print(f'Processed {line_count} lines.')
 
+print("Current workout statistics: ")
+for i in range(0, len(workouts)):
+	print("Total workouts for %s is: %d" %(workouts[i],workoutValues[i]))
 
-print(workouts)
-print(workoutValues)
 
 
 
