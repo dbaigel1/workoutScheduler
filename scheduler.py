@@ -30,7 +30,6 @@ with open('workouts.csv', mode='r') as csv_file:
             	if item:
             		workouts.append(item)
             line_count += 1
-        print(f'\t back workouts: {row["back"]} \n leg workouts: {row["legs"]} \n chest workouts: {row["chest"]} \n shoulder workouts: {row["shoulders"]}')
         workoutValues.append(int(row["back"]))
         workoutValues.append(int(row["legs"]))
         workoutValues.append(int(row["chest"]))
@@ -40,16 +39,17 @@ with open('workouts.csv', mode='r') as csv_file:
         	break
     print(f'Processed {line_count} lines.')
 
+#print current workout statistics
 print("Current workout statistics: ")
 for i in range(0, len(workouts)):
 	print("Total workouts for %s is: %d" %(workouts[i],workoutValues[i]))
 
 
-
-
 #input from user
 processed = False
 
+
+#create user interface
 while not processed:
 	
 	print("Please enter a command:")
@@ -70,13 +70,33 @@ while not processed:
 		processed = True
 	elif userInput == "next":
 		#print what muscle group the user should use next
-		#i.e. the smallest integer in the dictionary
+		#i.e. the smallest integer in the arry
 		processed = True
+		minMuscle = ""
+		minValue = workoutValues[0]
+		maxValue = workoutValues[0]
+		maxMuscle = ""
+
+		#compute the minimum and maximum workout values
+		for i in range(0, len(workouts)):
+			if minValue > workoutValues[i]:
+				minValue = workoutValues[i]
+				minMuscle = workouts[i]
+
+			if maxValue < workoutValues[i]:
+				maxValue = workoutValues[i]
+				maxMuscle = workouts[i]
+		if minMuscle == "":
+			print("All your muscles are equally worked out! \nTake a rest day, or start with back. \nYou've worked out everything %d times. Congrats!" %(maxValue))
+		else:
+			print("""The next muscle you should workout is: %s. \n 
+			     	 It has been workedout %d times. \n
+			     	 That's %d fewer times than %s.
+			      """ %(minMuscle, minValue, maxValue, maxMuscle))
+
 	else:
 		print("Please enter a correct command")
 		print("Types of commands include: 'back' or 'next'")
-
-#create user interface
 
 #write back to csv file with new value
 #with open('workouts.csv', 'w', newline='') as csvfile:
