@@ -5,20 +5,20 @@
 # program will do 2 different things based on input
 # 1. Add entry to workout database
 #		if input is a string, increment data entry on that string by 1
-# 2. Return what muscle to workout next 
-#		if input is "workout" return the muscle group with least entries
-#		further application could tell you how much less you have worked 
-#		out this muscle than other entries.
+# 
 #
 # Data will be stored in a csv file, and then stored in the program as a dictionary
 # Key will be string ("Back", "Chest", etc.) and Value will be number of entries.
 
 #create database
 import csv
+from datetime import date
+
 
 #create arrays
 workouts = []
 workoutValues = []
+today = date.today()
 
 with open('workouts.csv', mode='r') as csv_file:
     csv_reader = csv.DictReader(csv_file)
@@ -27,7 +27,7 @@ with open('workouts.csv', mode='r') as csv_file:
         if line_count == 0:
             print(f'Column names are {", ".join(row)}')
             for item in row:
-            	if item:
+            	if item and item != "date":
             		workouts.append(item)
             line_count += 1
         workoutValues.append(int(row["back"]))
@@ -58,6 +58,14 @@ while not processed:
 	if userInput == "back" or userInput == "biceps":
 		#increment number of workouts in back entry
 		#print total number of workouts in that category
+		#write back to csv file with new value
+		workoutValues[0] += 1
+		with open('workouts.csv', 'w', newline='') as csvfile:
+
+			fieldnames = ['date', 'back', 'legs', 'chest', 'shoulders']
+			writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
+			writer.writeheader()
+			writer.writerow({'date': today, 'back': workoutValues[0], 'legs': workoutValues[1], 'chest': workoutValues[2], 'shoulders': workoutValues[3]})
 		processed = True
 	elif userInput == "legs":
 		#increment number of workouts in legs entry
@@ -74,7 +82,7 @@ while not processed:
 		processed = True
 		minMuscle = ""
 		minValue = workoutValues[0]
-		maxValue = workoutValues[0]
+		maxValue = 0
 		maxMuscle = ""
 
 		#compute the minimum and maximum workout values
@@ -106,12 +114,3 @@ while not processed:
 		print("Please enter a correct command")
 		print("Types of commands include: 'back' or 'next'")
 
-#write back to csv file with new value
-#with open('workouts.csv', 'w', newline='') as csvfile:
-#    fieldnames = ['back', 'legs', 'chest', 'shoulders']
-#    writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
-
-    # writer.writeheader()
-    # writer.writerow({'first_name': 'Baked', 'last_name': 'Beans'})
-    # writer.writerow({'first_name': 'Lovely', 'last_name': 'Spam'})
-    # writer.writerow({'first_name': 'Wonderful', 'last_name': 'Spam'})
