@@ -94,6 +94,14 @@ while not processed:
 			     	 That's %d fewer times than %s.
 			      """ %(minMuscle, minValue, maxValue, maxMuscle))
 
+	elif userInput == "help":
+		print("The following are all possible commands:") #glossary for commands
+		print("'next': prints what muscle group to workout next")
+		print("'back': adds a back & biceps workout to the database")
+		print("'legs': adds a leg workout to the database")
+		print("'chest': adds a chest & tricep workout to the database")
+		print("'shoulders': adds a shoulder workout to the database")
+		print("'help': prints list of all possible commands")
 	else:
 		print("Please enter a correct command")
 		print("Types of commands include: 'back' or 'next'")
