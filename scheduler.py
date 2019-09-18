@@ -17,7 +17,7 @@ lastDate = ""
 
 #function declarations
 def updateDataBase(inp, muscle):
-	workoutValues[inp] += 1
+	workoutValues[inp] -= 1
 	with open('workouts.csv', 'w', newline='') as csvfile:
 		fieldnames = ['date', 'back', 'legs', 'chest', 'shoulders']
 		writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
