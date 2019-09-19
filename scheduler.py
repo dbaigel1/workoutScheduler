@@ -4,6 +4,9 @@
 # 
 # further applications:
 # 	add workout feature, adds a workout to the database headers (e.g. cardio)
+#   add a date for each muscle group so that you can see when the last time you
+#   worked out that muscle group was, for data science you can then see longest intervals
+#   b/w given workouts for a muscle group.
 
 import csv
 from datetime import date
@@ -66,7 +69,7 @@ def nextMuscle(minMuscle, minValue, maxMuscle, maxValue):
 		print("All your muscles are equally worked out! \nTake a rest day, or start with back. \nYou've worked out everything %d times. Congrats!" %(maxValue))
 	
 	else:
-		print("""The next muscle you should work out is: %s.\nIt has been worked out %d times. \nThat's %d fewer times than %s.
+		print("""The next muscle you should work out is: %s.\nIt has been worked out %d time(s). \nThat's %d fewer time(s) than %s.
 		      """ %(minMuscle, minValue, (maxValue-minValue), maxMuscle))
 
 #glossary for commands
@@ -117,7 +120,10 @@ while True:
 	elif userInput == "next":
 		#print what muscle group the user should use next
 		#i.e. the smallest integer in the arry
-		nextMuscle("", workoutValues[0], "", 0)
+		minValue = 0
+		for i in range(0, len(workoutValues)):
+			minValue += workoutValues[i]
+		nextMuscle("", minValue, "", 0)
 		
 	elif userInput == "help":
 		printCommands()
