@@ -65,7 +65,12 @@ def nextMuscle(minMuscle, minValue, maxMuscle, maxValue):
 		if maxValue < workoutValues[i]:
 			maxValue = workoutValues[i]
 			maxMuscle = workouts[i]
-	if minMuscle == "":
+
+		allEqual = True
+		if i < len(workouts) - 1:
+			if workouts[i] != workouts[i+1]:
+				allEqual = False
+	if allEqual:
 		print("All your muscles are equally worked out! \nTake a rest day, or start with back. \nYou've worked out everything %d times. Congrats!" %(maxValue))
 	
 	else:
