@@ -84,6 +84,7 @@ def nextMuscle(minMuscle, minValue, maxMuscle, maxValue):
 			if workouts[i] != workouts[i+1]:
 				allEqual = False
 
+		#do 2 checks for least recent date & muscle worked out
 		currMaxDate = today
 		currMuscle = ""
 		
@@ -93,20 +94,17 @@ def nextMuscle(minMuscle, minValue, maxMuscle, maxValue):
 
 		check2 = today - currMaxDate
 		
-
-
 		if check.days > check2.days:
 			currMaxDate = (datetime.strptime(muscleDates[i], '%Y-%m-%d')).date()
 			currMuscle = workouts[i]
 		deltaDate = today - currMaxDate
-		print(deltaDate.days)
 
 	if allEqual is True:
 		print("All your muscles are equally worked out! \nTake a rest day, or start with %s. \nYou've worked out everything %d times. Congrats!" %(currMuscle, maxValue))
 	
 	else:
-		print("""The next muscle you should work out is: %s.\nIt has been worked out %d time(s). \nThat's %d fewer time(s) than %s. \nThe last time it was worked out was %s. 
-		      """ %(minMuscle, minValue, (maxValue-minValue), maxMuscle, currMaxDate))
+		print("""The next muscle you should work out is: %s.\nIt has been worked out %d time(s). \nThat's %d fewer time(s) than %s. \nThe last time it was worked out was %s.\nThat's %d days ago. 
+		      """ %(minMuscle, minValue, (maxValue-minValue), maxMuscle, currMaxDate, deltaDate.days))
 
 #glossary for commands
 def printCommands():
