@@ -1,2 +1,2 @@
-date,back,legs,chest,shoulders
-2019-09-24,3,3,3,3
+date,back,legs,chest,shoulders,backDate,legsDate,chestDate,shouldersDate
+2019-09-25,3,4,3,3,2019-09-25,2019-09-25,2019-09-25,2019-09-25

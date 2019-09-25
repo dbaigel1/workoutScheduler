@@ -10,25 +10,30 @@
 
 import csv
 from datetime import date
+from datetime import datetime
 
 
 #global variables
 workouts = [] # names of muscles
 workoutValues = [] # num of workouts for each muscle 
 today = date.today()
-lastDate = ""
+lastDate = "" #last time I worked out
+muscleDates = [] #dates of last workout for each muscle
 
 #function declarations
 def updateDataBase(inp, muscle):
 	workoutValues[inp] += 1
+	lastTime = muscleDates[inp]
+	muscleDates[inp] = today
 	with open('workouts.csv', 'w', newline='') as csvfile:
-		fieldnames = ['date', 'back', 'legs', 'chest', 'shoulders']
+		fieldnames = ['date', 'back','legs', 'chest', 'shoulders','backDate', 'legsDate', 'chestDate', 'shouldersDate']
 		writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
 		writer.writeheader()
-		writer.writerow({'date': today, 'back': workoutValues[0], 'legs': workoutValues[1], 'chest': workoutValues[2], 'shoulders': workoutValues[3]})
+		writer.writerow({'date': today, 'back': workoutValues[0], 'legs': workoutValues[1], 'chest': workoutValues[2], 'shoulders': workoutValues[3], 'backDate': muscleDates[0], 'legsDate': muscleDates[1], 'chestDate': muscleDates[2], 'shouldersDate': muscleDates[3]})
 		
 		print("Added entry to back. You have now worked out your %s %d times." %(muscle, workoutValues[inp]))
 		print("The last time you worked out was %s." %(lastDate))
+		print("The last time you worked out your back was %s." %(lastTime))
 		print("For reference, today is %s." %(today))
 
 #create database
@@ -43,13 +48,20 @@ def readData():
 	            	if item == "date":
 	            		global lastDate 
 	            		lastDate = row[item]
-	            	if item and item != "date":
+	            	if item and "Date" not in item and item != "date":
 	            		workouts.append(item)
 	            line_count += 1
+	        #populate muscle values from data
 	        workoutValues.append(int(row["back"]))
 	        workoutValues.append(int(row["legs"]))
 	        workoutValues.append(int(row["chest"]))
 	        workoutValues.append(int(row["shoulders"]))
+	        #populate most recent dates from data
+	        muscleDates.append(row["backDate"])
+	        muscleDates.append(row["legsDate"])
+	        muscleDates.append(row["chestDate"])
+	        muscleDates.append(row["shouldersDate"])
+
 	        line_count += 1
 	        if line_count >= 2: #only one line of data so break after first loop
 	        	break
@@ -66,16 +78,35 @@ def nextMuscle(minMuscle, minValue, maxMuscle, maxValue):
 			maxValue = workoutValues[i]
 			maxMuscle = workouts[i]
 
-		allEqual = True
+		
 		if i < len(workouts) - 1:
+			allEqual = True
 			if workouts[i] != workouts[i+1]:
 				allEqual = False
-	if allEqual:
-		print("All your muscles are equally worked out! \nTake a rest day, or start with back. \nYou've worked out everything %d times. Congrats!" %(maxValue))
+
+		currMaxDate = today
+		currMuscle = ""
+		
+		temp = datetime.strptime(muscleDates[i], '%Y-%m-%d')
+		temp = temp.date()
+		check = today - temp
+
+		check2 = today - currMaxDate
+		
+
+
+		if check.days > check2.days:
+			currMaxDate = (datetime.strptime(muscleDates[i], '%Y-%m-%d')).date()
+			currMuscle = workouts[i]
+		deltaDate = today - currMaxDate
+		print(deltaDate.days)
+
+	if allEqual is True:
+		print("All your muscles are equally worked out! \nTake a rest day, or start with %s. \nYou've worked out everything %d times. Congrats!" %(currMuscle, maxValue))
 	
 	else:
-		print("""The next muscle you should work out is: %s.\nIt has been worked out %d time(s). \nThat's %d fewer time(s) than %s.
-		      """ %(minMuscle, minValue, (maxValue-minValue), maxMuscle))
+		print("""The next muscle you should work out is: %s.\nIt has been worked out %d time(s). \nThat's %d fewer time(s) than %s. \nThe last time it was worked out was %s. 
+		      """ %(minMuscle, minValue, (maxValue-minValue), maxMuscle, currMaxDate))
 
 #glossary for commands
 def printCommands():
@@ -101,6 +132,7 @@ def printCurrentStats():
 readData()
 printCommands()
 
+
 #create user interface
 while True:
 	print("Please enter a command:")
@@ -124,7 +156,8 @@ while True:
 
 	elif userInput == "next":
 		#print what muscle group the user should use next
-		#i.e. the smallest integer in the arry
+		#i.e. the smallest integer in the array
+		#initialize minValue to be value larger than all items in array
 		minValue = 0
 		for i in range(0, len(workoutValues)):
 			minValue += workoutValues[i]
