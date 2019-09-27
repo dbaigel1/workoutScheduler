@@ -87,9 +87,12 @@ def nextMuscle(minMuscle, minValue, maxMuscle, maxValue):
 		#do 2 checks for least recent date & muscle worked out
 		currMaxDate = today
 		currMuscle = ""
+		if type(muscleDates[i]) is str:
+			temp = datetime.strptime(muscleDates[i], '%Y-%m-%d')
+			temp = temp.date()
+		else:
+			temp = muscleDates[i]
 		
-		temp = datetime.strptime(muscleDates[i], '%Y-%m-%d')
-		temp = temp.date()
 		check = today - temp
 
 		check2 = today - currMaxDate
