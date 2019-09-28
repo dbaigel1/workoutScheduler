@@ -31,9 +31,9 @@ def updateDataBase(inp, muscle):
 		writer.writeheader()
 		writer.writerow({'date': today, 'back': workoutValues[0], 'legs': workoutValues[1], 'chest': workoutValues[2], 'shoulders': workoutValues[3], 'backDate': muscleDates[0], 'legsDate': muscleDates[1], 'chestDate': muscleDates[2], 'shouldersDate': muscleDates[3]})
 		
-		print("Added entry to back. You have now worked out your %s %d times." %(muscle, workoutValues[inp]))
+		print("Added entry to %s. You have now worked out your %s %d times." %(muscle, muscle, workoutValues[inp]))
 		print("The last time you worked out was %s." %(lastDate))
-		print("The last time you worked out your back was %s." %(lastTime))
+		print("The last time you worked out your %s was %s." %(muscle, lastTime))
 		print("For reference, today is %s." %(today))
 
 #create database
