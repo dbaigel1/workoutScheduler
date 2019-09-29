@@ -69,6 +69,9 @@ def readData():
 #determine which muscle group for next workout
 def nextMuscle(minMuscle, minValue, maxMuscle, maxValue):
 #compute the minimum and maximum workout values
+	allEqual = True
+	currMaxDate = today
+	currMuscle = ""
 	for i in range(0, len(workouts)):
 		if minValue > workoutValues[i]:
 			minValue = workoutValues[i]
@@ -80,13 +83,11 @@ def nextMuscle(minMuscle, minValue, maxMuscle, maxValue):
 
 		
 		if i < len(workouts) - 1:
-			allEqual = True
-			if workouts[i] != workouts[i+1]:
+			if workoutValues[i] != workoutValues[i+1]:
 				allEqual = False
 
 		#do 2 checks for least recent date & muscle worked out
-		currMaxDate = today
-		currMuscle = ""
+		
 		if type(muscleDates[i]) is str:
 			temp = datetime.strptime(muscleDates[i], '%Y-%m-%d')
 			temp = temp.date()
@@ -102,8 +103,8 @@ def nextMuscle(minMuscle, minValue, maxMuscle, maxValue):
 			currMuscle = workouts[i]
 		deltaDate = today - currMaxDate
 
-	if allEqual is True:
-		print("All your muscles are equally worked out! \nTake a rest day, or start with %s. \nYou've worked out everything %d times. Congrats!" %(currMuscle, maxValue))
+	if allEqual:
+		print("All your muscles are equally worked out!\nYou've worked out everything %d times. Congrats! \nTake a rest day, or start with %s. \nThe last time you worked out %s was %d days ago." %(maxValue, currMuscle, currMuscle, deltaDate.days))
 	
 	else:
 		print("""The next muscle you should work out is: %s.\nIt has been worked out %d time(s). \nThat's %d fewer time(s) than %s. \nThe last time it was worked out was %s.\nThat's %d days ago. 
