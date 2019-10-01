@@ -126,6 +126,7 @@ def printCommands():
 #print current workout statistics
 def printCurrentStats():
 	print("Current workout statistics: ")
+	print("Most recent workout was on: %s" %(lastDate))
 	for i in range(0, len(workouts)):
 		print("Total workouts for %s: %d" %(workouts[i],workoutValues[i]))
 
