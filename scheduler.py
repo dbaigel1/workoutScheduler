@@ -73,6 +73,8 @@ def nextMuscle(minMuscle, minValue, maxMuscle, maxValue):
 	currMaxDate = today
 	currMuscle = ""
 	for i in range(0, len(workouts)):
+		if workouts[i] == "Shoulders":
+			continue
 		if minValue > workoutValues[i]:
 			minValue = workoutValues[i]
 			minMuscle = workouts[i]
